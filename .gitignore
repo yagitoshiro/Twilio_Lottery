@@ -1,4 +1,5 @@
 node_modules
 *swp
 files/*mp3
+npm-debug.log
 .DS_Store

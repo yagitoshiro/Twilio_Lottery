@@ -8,12 +8,15 @@ module.exports = function(req, res, sid, auth_token, number, generated_token, vo
   lottery.auth_token = auth_token;
   lottery.createdAt = new Date();
   lottery.phone_number = format_phone_number(number);
-  lottery.sms_phone_number = format_phone_number(req.param('sms_phone_number'));
+  lottery.sms_phone_number = format_phone_number(req.body.sms_phone_number);
   lottery.token = generated_token;
   lottery.voice_file = file_path;
   lottery.voice_text = voice_text;
   lottery.mode = mode;
   lottery.call_session = 0;
+  lottery.phone_enabled = req.body.phone_enabled ? true : false;
+  lottery.sms_text = req.body.sms_text;
+  lottery.admin_phone_number = format_phone_number(req.body.admin_phone_number).replace(/^0/, '81');
   lottery.save(function(err){
     if(err){
       res.json({success: false, message: 'データを保存できませんでした'});

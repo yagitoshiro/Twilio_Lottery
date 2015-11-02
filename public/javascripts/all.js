@@ -2,6 +2,21 @@ $(document).ready(function(){
 
   var winners_list_timer;
 
+  $("#phone_enabled_label").click(function(e){
+    if($("#phone_enabled").attr("checked")){
+      $("#phone_enabled").removeAttr("checked");
+    }else{
+      $("#phone_enabled").prop("checked", true);
+      $("#phone_enabled").attr("checked", "checked");
+    }
+    $("#admin_phone_panel").toggle();
+  });
+
+  $('#sms_text').keyup(function(e){
+    var count = $('#sms_text').val().length;
+    $('#sms_text_counter').text(count.toString());
+  });
+
   $('.easy-select-box').easySelectBox();
 
   function showLoading(){
@@ -60,6 +75,9 @@ $(document).ready(function(){
       form_data.append('voice_text', $('#voice_text').val());
       form_data.append('phone_number', $('#phone_number').val());
       form_data.append('sms_phone_number', $('#sms_phone_number').val());
+      form_data.append('phone_enabled', $('#phone_enabled').val());
+      form_data.append('sms_text', $('#sms_text').val());
+      form_data.append('admin_phone_number', $('#admin_phone_number').val());
       form_data.append('_csrf', $('#csrf').val());
       if($('#voice_file').val()){
         var file_data = $('#voice_file').prop('files')[0];
@@ -116,6 +134,7 @@ $(document).ready(function(){
         method: 'GET',
         success: function(e){
           $('#winners').html(e.num);
+          $('#conference_count').text("通話中：" +  e.num.toString() + "");
         }
       });
     }, 3000);
@@ -210,7 +229,7 @@ $(document).ready(function(){
 console.log();
               $('#table').append('<tr><th class="winners_number">'+e.data[i].phone_number.substr(-4)+'</th><td><ul><li class="'+className+'">'+status+ postfix + '</ul></td></tr>');
             }
-          } 
+          }
           $('#finished').html(finished);
         }
       }
@@ -320,7 +339,7 @@ console.log();
   $('#destroy').click(function(){
       if(confirm("抽選を終了しますか？この操作は取り消しできません")){
         if($('#token').length > 0){
-          console.log('destroy');  
+          console.log('destroy');
           updateToken(function(){
           $.ajax({
             url: '/destroy/' + $('#token').html() + '?_csrf=' + $('#csrf').val(),
