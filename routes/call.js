@@ -1,8 +1,13 @@
 var validate_twilio_request = require(__dirname + '/../common/validate_twilio_request');
 var twilio = require('twilio');
 var Lottery = require(__dirname + '/../models/lottery');
+var Phone = require(__dirname + '/../models/phone');
+var History = require(__dirname + '/../models/history');
 var send_xml = require(__dirname + '/../common/send_xml');
+var phone_call = require(__dirname + '/../common/phone_call');
 var speak_error_message = require(__dirname + '/../common/speak_error_message');
+var shuffle = require(__dirname + '/../common/shuffle');
+
 var express = require('express');
 var router = express.Router();
 
@@ -55,7 +60,7 @@ router.post('/conference/user/:token', function(req, res, next){
 });
 
 //主催者
-router.post('/admin/:token', function(req, res, next){
+router.post('/admin/:token/:max/:no_dup', function(req, res, next){
   var resp = new twilio.TwimlResponse();
   validate_twilio_request(req, res, 'Caller', function(e){
     Lottery.find({token: req.params.token}, function(err, docs){
@@ -68,9 +73,40 @@ router.post('/admin/:token', function(req, res, next){
         });
         send_xml(res, xml);
         // 当選処理開始
+        console.log("start calling to winners");
+        do_lottery(req, l);
       }
     });
   });
 });
+
+function do_lottery(req, lottery){
+  var args = {token: req.params.token};
+  if(req.params.no_dup === "on"){
+    args.status = {'$ne': 'won'};
+  }
+  Phone.find(args, function(err, docs){
+    if(!err){
+      if(!req.params.no_dup){
+        clear_all(docs, function(){
+          call_to_winners(lottery, docs, req.params.max);
+        });
+      }else{
+        call_to_winners(lottery, docs, req);
+      }
+    }
+  });
+}
+
+function call_to_winners(lottery, phones, req){
+  var data = shuffle(phones);
+  for(var i = 0, len = data.length; i < req.params.max; i++){
+    data[i].status = 'calling';
+    phone_call(req, {data: data[i], lottery: lottery});
+  }
+  var history = new History();
+  history.numbers = len;
+  history.save(function(e){});
+}
 
 module.exports = router;

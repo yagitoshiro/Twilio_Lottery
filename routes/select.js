@@ -37,28 +37,28 @@ router.post('/', function(req, res, next){
                 if(e){
                   res.json({success: false, message: "データベースにエラーが発生しました"});
                 }else{
-                  var start_phone_call = function(){
-                    var data = shuffle(docs);
-                    var max = req.body.num;
-                    for(var i = 0, len = data.length; i < max; i++){
-                      data[i].status = 'calling';
-                      phone_call(req, {data: data[i], lottery: lotteries[0]});
-                    }
-                    //DBに履歴保存
-                    var history = new History();
-                    history.numbers = len;
-                    history.save(function(e){});
-                  };
                   // 機能追加 カンファレンスコールを作成して当選者を招待する
                   if(lotteries[0].phone_enabled){
-                    create_conference_call(req, lotteries[0], function(){
-                      if(!req.body.no_dup){
-                        clear_all(docs, start_phone_call);
-                      }else{
-                        start_phone_call();
-                      }
-                    });
+                    create_conference_call(req, lotteries[0]);//, function(){
+                    //  if(!req.body.no_dup){
+                    //    clear_all(docs, start_phone_call);
+                    //  }else{
+                    //    start_phone_call();
+                    //  }
+                    //});
                   }else{
+                    var start_phone_call = function(){
+                      var data = shuffle(docs);
+                      var max = req.body.num;
+                      for(var i = 0, len = data.length; i < max; i++){
+                        data[i].status = 'calling';
+                        phone_call(req, {data: data[i], lottery: lotteries[0]});
+                      }
+                      //DBに履歴保存
+                      var history = new History();
+                      history.numbers = len;
+                      history.save(function(e){});
+                    };
                     if(!req.body.no_dup){
                       clear_all(docs, start_phone_call);
                     }else{
