@@ -6,6 +6,5 @@ module.exports = function(sid, token, body, from, to){
     to: to,
     from: '+' + from
   }, function(err, message){
-    console.log(message);
   });
 };

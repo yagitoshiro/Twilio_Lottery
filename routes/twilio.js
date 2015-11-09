@@ -92,7 +92,6 @@ router.post('/cancel/:token', function(req, res, next){
           var lottery_data = lotteries[0];
           send_sms(lottery_data.account_sid, lottery_data.auth_token, "抽選登録を解除しました。",  lottery_data.sms_phone_number, req.body.From);
         }else if(!err){
-          console.log("canceled: " + req.body.From);
         }
       });
     });

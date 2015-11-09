@@ -5,7 +5,6 @@ var express = require('express');
 var router = express.Router();
 
 router.get('/:token', function(req, res, next){
-console.log(req.params.token);
   var lottery = new Lottery();
   Lottery.find({token: req.params.token}, function(err, docs){
     var message;

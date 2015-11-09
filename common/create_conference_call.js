@@ -13,7 +13,6 @@ function create_conference_call(req, lottery){
     statusCallback: req.protocol + "://" + req.hostname + '/status/' + lottery.token
   }, function(err, call){
     if(err !== null){
-      console.log(err);
       i++;
       if(i > 2){
         create_conference_call(req, lottery);

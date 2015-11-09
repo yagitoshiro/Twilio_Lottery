@@ -26,7 +26,6 @@ router.post('/', function(req, res, next){
       }
     });
   }catch(e){
-    console.log(e);
     res.render('index', {title: 'Twilio抽選アプリ', csrf: req.csrfToken(), message: '認証エラー'});
   }
 });

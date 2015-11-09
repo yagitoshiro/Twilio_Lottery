@@ -151,7 +151,8 @@ $(document).ready(function(){
     $.ajax({
       url: '/s/' + $('#token').html(),
       method: 'GET',
-      error: function(e){console.log(e);},
+      error: function(e){
+      },
       success: function(e){
         if(e.lottery){
           var createdAt = e.lottery.createdAt.toString().replace(/T/, ' ').replace(/\.[0-9]*Z/, '');
@@ -160,9 +161,6 @@ $(document).ready(function(){
           if(time_alert && Date.compare(current_time, limit) > 0){
             alert("あと15分でデータが消去されます。抽選を行って下さい。");
             time_alert = false;
-          }else{
-            console.log(limit);
-            console.log(current_time);
           }
           switch(e.action_status){
             case "calling":
@@ -231,7 +229,6 @@ $(document).ready(function(){
                 break;
               }
             if(className){
-console.log();
               $('#table').append('<tr><th class="winners_number">'+e.data[i].phone_number.substr(-4)+'</th><td><ul><li class="'+className+'">'+status+ postfix + '</ul></td></tr>');
             }
           }
@@ -344,7 +341,6 @@ console.log();
   $('#destroy').click(function(){
       if(confirm("抽選を終了しますか？この操作は取り消しできません")){
         if($('#token').length > 0){
-          console.log('destroy');
           updateToken(function(){
           $.ajax({
             url: '/destroy/' + $('#token').html() + '?_csrf=' + $('#csrf').val(),
