@@ -14,6 +14,11 @@ $(document).ready(function(){
 
   $('#sms_text').keyup(function(e){
     var count = $('#sms_text').val().length;
+    var max = 140;
+    if($('#sms_text').val().match(/[^a-zA-Z0-9!-/:-@¥[-`{-~]/)){
+      max = 70;
+      $('#sms_text').attr('maxLength', max);
+    }
     $('#sms_text_counter').text(count.toString());
   });
 
