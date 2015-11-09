@@ -34,7 +34,7 @@ router.post('/conference/user/:token', function(req, res, next){
         var l = docs[0];
         var xml;
         if(l.voice_file){
-          xml = resp.say("主催者と電話をつなげます。お待ち下さい。", {language: 'ja-jp'}).play(req.protocol + "://" + req.hostname + "" + l.voice_file.replace(/public/, '').replace(/\\/g, '/')).dial({
+          xml = resp.play(req.protocol + "://" + req.hostname + "" + l.voice_file.replace(/public/, '').replace(/\\/g, '/')).dial({
             timeout: 15
           }, function(node){
             node.conference(l.token, {
@@ -44,7 +44,7 @@ router.post('/conference/user/:token', function(req, res, next){
           send_xml(res, xml);
         }else{
           //speak_error_message(res, l.voice_text);
-          xml = resp.say("主催者と電話をつなげます。お待ち下さい。" + l.voice_text, {language: 'ja-jp'}).dial({timeout: 15}, function(node){
+          xml = resp.say(l.voice_text, {language: 'ja-jp'}).dial({timeout: 15}, function(node){
             node.conference(l.token, {beep: false});
           });
           send_xml(res, xml);
@@ -64,9 +64,10 @@ router.post('/admin/:token', function(req, res, next){
       }else{
         var l = docs[0];
         var xml = resp.say("当選者と電話をつなげます。お待ち下さい。", {language: 'ja-jp'}).dial({}, function(node){
-          node.conference(l.token, {endConferenceOnExit: true, beep: false});
+          node.conference(l.token, {endConferenceOnExit: true, beep: true});
         });
         send_xml(res, xml);
+        // 当選処理開始
       }
     });
   });

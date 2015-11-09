@@ -13,7 +13,6 @@ function create_conference_call(req, lottery, callback){
     if(err){
       console.log(err);
     }else{
-      // TODO 主催者が電話に出なかったら…
       callback();
     }
   });
