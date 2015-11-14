@@ -6,7 +6,6 @@ var express = require('express');
 var router = express.Router();
 
 router.post('/', function(req, res, next){
-console.log(req.body);
   var sid = req.session.sid;
   var auth_token = req.session.auth_token;
   var number = req.body.phone_number;
@@ -16,7 +15,25 @@ console.log(req.body);
   var sms_text = req.body.sms_text;
 //  var voice_file = req.param('voice_file');
   var mode = req.body.mode;
-  var generated_token;
+  //var generated_token;
+  var submitted_voice = req.body.submitted_voice;
+  var notice_phone = req.body.notice_phone;
+  var phone_enabled = req.body.phone_enabled;
+  var sms_phone_number = req.body.sms_phone_number;
+  var postData = {
+    sid: sid,
+    auth_token: auth_token,
+    number: number,
+    voice_text: voice_text,
+    admin_phone_number: admin_phone_number,
+    phone_enabled: phone_enabled,
+    sms_text: sms_text,
+    sms_phone_number: sms_phone_number,
+    mode: mode,
+    submitted_voice: submitted_voice,
+    notice_phone: notice_phone,
+    phone_enabled: phone_enabled
+  };
 
   if(!number || (!voice_text && !req.file)){
     var message = "電話番号とテキストまたはMP3は必須項目です。";
@@ -41,7 +58,8 @@ console.log(req.body);
           generate();
           return;
         }else{
-          generated_token = token;
+          //generated_token = token;
+          postData.generated_token = token;
           //MongoDBに登録
           var save_path = "";
           save_path = __dirname + "files";
@@ -51,18 +69,23 @@ console.log(req.body);
               if(exists){
                 fs.move(req.file.path, req.file.path + ".mp3", function(err){
                   if(!err){
-                    save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, req.file.path + '.mp3', mode);
+                    postData.file_path = req.file.path + '.mp3';
+                    //save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, req.file.path + '.mp3', mode);
+                    save_and_redirect(req, res, postData);
                   }else{
                     res.json({success: false, message: 'データを保存できませんでした'});
                   }
                 });
               }else{
                 //res.json({success: false, message: 'データを保存できませんでした'});
-                save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, null, mode);
+                postData.file_path = null;
+                //save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, null, mode);
+                save_and_redirect(req, res, postData);
               }
             });
           }else{
-              save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, null, mode);
+              //save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, null, mode);
+              save_and_redirect(req, res, postData);
           }
         }
       });

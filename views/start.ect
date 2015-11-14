@@ -15,7 +15,14 @@
           <option value="" selected="selected">選択してください</option>
     <%- @options %>
         </select>
-        <span class="warning">＊RequestURLが変更されます。番号を他の用途で利用していないかご確認ください</dd></span>
+        <dl class="noTable">
+        <span class="warning">＊RequestURLが変更されます。番号を他の用途で利用していないかご確認ください</span>
+          <dt><span class="warning black">抽選受付時のアナウンス設定</span></dt>
+          <dd>
+            <textarea name="submitted_voice" id="submitted_voice" cols="40" rows="4" class="sizeL">抽選を受け付けました。ありがとうございます。</textarea>
+          </dd>
+        </dl>
+      </dd>
       <dt>②抽選参加者にSMSを送信する電話番号と文面</dt>
       <dd>
         <select class="selectBox easy-select-box" name="sms_phone_number" id="sms_phone_number">
@@ -29,6 +36,8 @@
             <textarea name="sms_text" maxlength="140" id="sms_text" cols="40" rows="4" class="sizeL"></textarea>
           </dd>
         </dl>
+        <span class="warning black">抽選用URL・電話番号を送信する電話番号</span><br />
+        <input type="text" id="notice_phone" name="notice_phone" placeholder="09012345678" />
         </dd>
       <dt class="noTable">③当選者アナウンス設定</dt>
       <dd>
@@ -66,7 +75,7 @@
     <ul class="submitArea">
       <li>
         <form method="post" action="temporary_01.html">
-          <button id="tmp_button" type="button" class="red">仮設定</button>
+          <button id="tmp_button" type="button" class="red">設定</button>
         </form>
       </li>
       <li>

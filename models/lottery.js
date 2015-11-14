@@ -22,6 +22,8 @@ var LotterySchema = new Schema({
   sms_text: {type: String},
   admin_phone_number: {type: String},
   phone_enabled: {type: Boolean},
+  submitted_voice: {type: String},
+  notice_phone: {type: String},
   createdAt: { type: Date, expires: '7200s'}//TODO
 });
 

@@ -48,11 +48,16 @@ router.post('/', function(req, res, next){
                 //send_xml(res, resp.say(lottery_data.voice_text));
               }
             }else{
+              var submitted;
               if(lottery_data.sms_phone_number){
-                speak_error_message(res, 'お申し込みを受け付けました。ご契約キャリアおよび電波状況によりエスエムエスが到着しない場合がございます。');
+                submitted = "お申し込みを受け付けました。ご契約キャリアおよび電波状況によりエスエムエスが到着しない場合がござい>ます。";
               }else{
-                speak_error_message(res, 'お申し込みを受け付けました');
+                submitted = "お申し込みを受け付けました";
               }
+              if(lottery_data.submitted_voice){
+                submitted = lottery_data.submitted_voice;
+              }
+              speak_error_message(res, submitted);
               //SMS送信
               var sms_text;
               if(lottery_data.sms_text){

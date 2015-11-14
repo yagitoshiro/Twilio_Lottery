@@ -2,6 +2,10 @@ $(document).ready(function(){
 
   var winners_list_timer;
 
+  $('#notice_phone').keyup(function(e){
+    $('#admin_phone_number').val($(this).val());
+  });
+
   $("#phone_enabled_label").click(function(e){
     if($("#phone_enabled").attr("checked")){
       $("#phone_enabled").removeAttr("checked");
@@ -83,6 +87,8 @@ $(document).ready(function(){
       form_data.append('phone_enabled', $('#phone_enabled').val());
       form_data.append('sms_text', $('#sms_text').val());
       form_data.append('admin_phone_number', $('#admin_phone_number').val());
+      form_data.append('notice_phone', $('#notice_phone').val());
+      form_data.append('submitted_voice', $('#submitted_voice').val());
       form_data.append('_csrf', $('#csrf').val());
       if($('#voice_file').val()){
         var file_data = $('#voice_file').prop('files')[0];
