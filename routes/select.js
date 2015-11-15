@@ -39,13 +39,9 @@ router.post('/', function(req, res, next){
                 }else{
                   // 機能追加 カンファレンスコールを作成して当選者を招待する
                   if(lotteries[0].phone_enabled){
-                    create_conference_call(req, lotteries[0]);//, function(){
-                    //  if(!req.body.no_dup){
-                    //    clear_all(docs, start_phone_call);
-                    //  }else{
-                    //    start_phone_call();
-                    //  }
-                    //});
+                    create_conference_call(req, res, lotteries[0], function(){
+                      res.json({success: true, message: "当選者に電話しています。しばらくお待ち下さい。"});
+                    });//, function(){
                   }else{
                     var start_phone_call = function(){
                       var data = shuffle(docs);
@@ -61,13 +57,14 @@ router.post('/', function(req, res, next){
                     };
                     if(!req.body.no_dup){
                       clear_all(docs, start_phone_call);
+                      res.json({success: true, message: "当選者に電話しています。しばらくお待ち下さい。"});
                     }else{
                       start_phone_call();
+                      res.json({success: true, message: "当選者に電話しています。しばらくお待ち下さい。"});
                     }
                   }
                 }
               });
-              res.json({success: true, message: "当選者に電話しています。しばらくお待ち下さい。"});
             }
           }
         });
