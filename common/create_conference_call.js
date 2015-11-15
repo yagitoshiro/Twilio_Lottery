@@ -21,7 +21,7 @@ function create_conference_call(req, res, lottery, successCallback){
       //if(i > 2){
       //  create_conference_call(req, lottery);
       //}
-    }//else{
+    //}//else{
     //  callback();
     //}
   });
