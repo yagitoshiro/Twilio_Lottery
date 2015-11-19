@@ -25,7 +25,7 @@ var LotterySchema = new Schema({
   submitted_voice: {type: String},
   notice_phone: {type: String},
   //createdAt: { type: Date, expires: '7200s'}//TODO
-  createdAt: { type: Date, expires: '14400s'}//TODO
+  createdAt: { type: Date, expires: '18000s'}//TODO
 });
 
 //LotterySchema.index({createdAt: 1}, {expireAfterSeconds: expire});

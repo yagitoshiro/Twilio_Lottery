@@ -41,7 +41,7 @@ router.post('/', function(req, res, next){
                   if(lotteries[0].phone_enabled){
                     create_conference_call(req, res, lotteries[0], function(){
                       res.json({success: true, message: "当選者に電話しています。しばらくお待ち下さい。"});
-                    });//, function(){
+                    });
                   }else{
                     var start_phone_call = function(){
                       var data = shuffle(docs);

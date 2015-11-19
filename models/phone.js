@@ -10,7 +10,7 @@ var PhoneSchema = new Schema({
   callstatus: { type: String },
   callsid: { type: String },
   //createdAt: { type: Date, expires: '7200s' }
-  createdAt: { type: Date, expires: '14400s'}//TODO
+  createdAt: { type: Date, expires: '18000s'}//TODO
 });
 
 module.exports = mongoose.model('PhoneModel', PhoneSchema);
