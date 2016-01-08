@@ -76,8 +76,8 @@ if (app.get('env') == 'production') {
 
 // File upload
 app.use(multer({
-  dest: "./public/files/"
-}));
+    dest: "./public/files/"
+}).single('voice_file'));
 
 /* configuration */
 
