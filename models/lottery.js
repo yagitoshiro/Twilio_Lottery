@@ -19,7 +19,7 @@ var LotterySchema = new Schema({
   voice_file: { type: String },
   voice_text: {type: String},
   action_status: {type: String},
-  createdAt: { type: Date, expires: '7200s'}//TODO
+  createdAt: { type: Date, expires: '18000s'}//TODO
 });
 
 //LotterySchema.index({createdAt: 1}, {expireAfterSeconds: expire});
