@@ -159,7 +159,8 @@ app.post('/number', function(req, res){
   var mode = req.param('mode');
   var generated_token;
 
-  if(!number || (!voice_text && !req.files.voice_file)){
+  //if(!number || (!voice_text && !req.files.voice_file)){
+  if(!number || (!voice_text && !req.file)){
     var message = "電話番号とテキストまたはMP3は必須項目です。";
     if(mode == "trial"){
       res.json({error: true, message: message});
@@ -183,12 +184,12 @@ app.post('/number', function(req, res){
           //MongoDBに登録
           var save_path = "";
           save_path = __dirname + "files";
-          if(req.files.voice_file){
-            fs.exists(req.files.voice_file.path, function(exists){
+          if(req.file){
+            fs.exists(req.file.path, function(exists){
               if(exists){
-                save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, req.files.voice_file.path, mode);
+                save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, req.file.path, mode);
               }else{
-                save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, req.files.voice_file.path, mode);
+                save_and_redirect(req, res, sid, auth_token, number, generated_token, voice_text, req.file.path, mode);
               }
             });
           }else{
