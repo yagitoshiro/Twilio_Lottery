@@ -134,7 +134,7 @@ $(document).ready(function(){
           var limit = Date.parseExact(createdAt, "yyyy-MM-dd HH:mm:ss").addHours(11).addMinutes(-15);
           var current_time = Date.today().setTimeToNow();
           if(time_alert && Date.compare(current_time, limit) > 0){
-            alert("あと15分でデータが消去されます。抽選を行って下さい。");
+            //alert("あと15分でデータが消去されます。抽選を行って下さい。");
             time_alert = false;
           }else{
             console.log(limit);
