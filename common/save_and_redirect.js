@@ -24,7 +24,7 @@ module.exports = function(req, res, sid, auth_token, number, generated_token, vo
         }else{
           switch(mode){
             case "trial":
-              res.json({success: true, message: display_phone_number(number), debug: lottery});
+              res.json({success: true, message: display_phone_number(number), url: '/l/' + generated_token, debug: lottery});
               break;
             default:
               res.json({success: true, message: display_phone_number(number), url: '/l/' + generated_token});
