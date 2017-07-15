@@ -78,8 +78,23 @@ if (app.get('env') == 'production') {
 
 // File upload
 //app.use(multer({
-var upload = multer({
-    dest: "./public/files/"
+//
+var crypto = require('crypto');
+
+function sha256(data) {
+    return crypto.createHash("sha256").update(data).digest("base64");
+}
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/files')
+  },
+  filename: function (req, file, cb) {
+    cb(null, sha256(file.originalname + (new Date()).toString()) + '.mp3')
+  }
+});
+var upload = multer({ 
+    storage: storage
 });//.single('voice_file'));
 
 /* configuration */
