@@ -11,6 +11,9 @@ var twilio = require('twilio');
 var csrf = require('csurf');
 var path = require('path');
 var fs = require('fs-extra');
+var crypto = require('crypto');
+var base64url = require('base64url');
+
 var Lottery = require(__dirname + '/models/lottery');
 var Phone = require(__dirname + '/models/phone');
 var History = require(__dirname + '/models/history');
@@ -79,18 +82,16 @@ if (app.get('env') == 'production') {
 // File upload
 //app.use(multer({
 //
-var crypto = require('crypto');
-
-function sha256(data) {
-    return crypto.createHash("sha256").update(data).digest("base64");
+function randomStringAsBase64Url(size) {
+  return base64url(crypto.randomBytes(size));
 }
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './public/files')
+    cb(null, __dirname + '/public/files')
   },
   filename: function (req, file, cb) {
-    cb(null, sha256(file.originalname + (new Date()).toString()) + '.mp3')
+    cb(null, (new Date()).getTime() + '_' + randomStringAsBase64Url(20) + '.mp3');
   }
 });
 var upload = multer({ 
@@ -359,7 +360,8 @@ app.post('/call/:token', function(req, res){
       }else{
         var l = docs[0];
         if(l.voice_file){
-          send_xml(res, resp.play(req.protocol + "://" + req.hostname + "" + l.voice_file.replace(/public/, '').replace(/\\/g, '/')));
+//          send_xml(res, resp.play(req.protocol + "://" + req.hostname + "" + l.voice_file.replace(/public/, '').replace(/\\/g, '/')));
+          send_xml(res, resp.play(req.protocol + "://" + req.hostname + "" + l.voice_file.split('public')[1].replace(/\\/g, '/')));
         }else{
           speak_error_message(res, l.voice_text);
         }
@@ -462,7 +464,8 @@ app.post('/twilio', function(req, res){
               send_sms(lottery_data.account_sid, lottery_data.auth_token, body,  lottery_data.sms_phone_number, req.param('From'));
 
               if(lottery_data.voice_file){
-                send_xml(res, resp.play(req.protocol + "://" + req.hostname + "" + lottery_data.voice_file.replace(/public/, '').replace(/\\/g, '/'), {loop: 3}));
+//                send_xml(res, resp.play(req.protocol + "://" + req.hostname + "" + lottery_data.voice_file.replace(/public/, '').replace(/\\/g, '/'), {loop: 3}));
+                send_xml(res, resp.play(req.protocol + "://" + req.hostname + "" + lottery_data.voice_file.split('public')[1].replace(/\\/g, '/'), {loop: 3}));
               }else{
                 speak_error_message(res, lottery_data.voice_text);
                 //send_xml(res, resp.say(lottery_data.voice_text));
